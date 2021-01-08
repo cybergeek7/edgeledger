@@ -11,17 +11,28 @@ function initMap() {
   const marker = new google.maps.Marker({ position: loc, map: map });
 }
 
-// Sticky menu background
-window.addEventListener('scroll', function () {
-  if (window.scrollY > 150) {
-    document.querySelector('#navbar').style.opacity = 0.9;
+// Navbar effect
+const navbar = document.getElementById('navbar');
+let scrolled = false;
+
+window.onscroll = () => {
+  if (window.pageYOffset > 100) {
+    navbar.classList.remove('top');
+    if (!scrolled) {
+      navbar.style.transform = 'translateY(-70px)';
+    }
+    setTimeout(() => {
+      navbar.style.transform = 'translateY(0)';
+      scrolled = true;
+    }, 200);
   } else {
-    document.querySelector('#navbar').style.opacity = 1;
+    navbar.classList.add('top');
+    scrolled = false;
   }
-});
+};
 
 // Smooth Scrolling
-$('#navbar a').on('click', function (event) {
+$('#navbar a, .btn').on('click', function (event) {
   const hash = this.hash;
   if (hash !== '') {
     event.preventDefault();
@@ -30,7 +41,16 @@ $('#navbar a').on('click', function (event) {
       {
         scrollTop: $(hash).offset().top - 100,
       },
-      800
+      500
     );
+  }
+});
+
+// Sticky menu background
+window.addEventListener('scroll', function () {
+  if (window.scrollY > 150) {
+    document.querySelector('#navbar').style.opacity = 0.9;
+  } else {
+    document.querySelector('#navbar').style.opacity = 1;
   }
 });
